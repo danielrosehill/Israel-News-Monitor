@@ -1,0 +1,3 @@
+[submodule "data/shelters"]
+	path = data/shelters
+	url = git@github.com:danielrosehill/Public-Shelter-Lists-Israel.git
