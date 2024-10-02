@@ -1,9 +1,10 @@
-# [Repository Name]
+# Israel News Montitor Pane
+
+![alt text](Screenshots/v1.png)
 
 ## Purpose Statement
 
-
-## Use Case Statement
+For those staying up to date with developments in Israel during geopolitically sensitive times.
 
 ## Author
 
