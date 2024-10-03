@@ -2,6 +2,7 @@ import sys
 import json
 import requests
 import feedparser
+import re
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTabWidget, QScrollArea, QGridLayout
@@ -41,17 +42,13 @@ class RSSWidget(QWidget):
         self.scroll_area = QScrollArea()
         self.scroll_content = QWidget()
         self.scroll_layout = QVBoxLayout(self.scroll_content)
-
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.scroll_content)
         self.layout.addWidget(self.scroll_area)
-
         self.setLayout(self.layout)
-
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_feed)
         self.timer.start(300000)  # Update every 5 minutes
-
         self.update_feed()
 
     def update_feed(self):
@@ -59,24 +56,26 @@ class RSSWidget(QWidget):
         feed = feedparser.parse(feed_url)
 
         # Clear previous content
-        for i in reversed(range(self.scroll_layout.count())): 
+        for i in reversed(range(self.scroll_layout.count())):
             self.scroll_layout.itemAt(i).widget().setParent(None)
 
         # Add title
         title = QLabel("The Times of Israel - Latest News")
-        title.setStyleSheet("font-weight: bold; font-size: 16px;")
+        title.setStyleSheet("font-weight: bold; font-size: 18px;")
         title.setAlignment(Qt.AlignCenter)
         self.scroll_layout.addWidget(title)
 
         # Add feed entries
         for entry in feed.entries[:10]:  # Display the latest 10 entries
             title = QLabel(entry.title)
-            title.setStyleSheet("font-weight: bold;")
+            title.setStyleSheet("font-weight: bold; font-size: 14px;")
             title.setWordWrap(True)
             self.scroll_layout.addWidget(title)
 
             summary = QLabel(entry.summary)
             summary.setWordWrap(True)
+            # Remove any img tags from the summary
+            summary.setText(re.sub(r'<img[^>]*>', '', entry.summary))
             self.scroll_layout.addWidget(summary)
 
             self.scroll_layout.addWidget(QLabel(""))  # Spacer
@@ -126,13 +125,14 @@ def load_shelters_data():
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Israeli News Dashboard")
+        self.setWindowTitle("Israeli News Monitoring Dashboard")
         self.setWindowFlags(Qt.Window | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
         screen = QGuiApplication.primaryScreen().geometry()
         self.setGeometry(screen)
 
         main_layout = QVBoxLayout()
-        title_label = QLabel("Israeli News Dashboard")
+
+        title_label = QLabel("Israeli News Monitoring Dashboard")
         title_label.setStyleSheet("font-weight: bold; background-color: #3498db; color: white; padding: 5px;")
         title_label.setAlignment(Qt.AlignCenter)
         title_label.setFont(QFont("Helvetica", 18))
@@ -160,10 +160,8 @@ class MainWindow(QWidget):
 
         right_pane = QTabWidget()
         red_alerts_tab = BrowserWindow("https://www.oref.org.il/en")
-        
         shelters_data = load_shelters_data()
         public_shelters_tab = PublicSheltersTab(shelters_data)
-        
         guidance_tab = BrowserWindow("https://www.oref.org.il/eng/emergencies/protection-guidelines")
         right_pane.addTab(red_alerts_tab, "Red Alerts")
         right_pane.addTab(public_shelters_tab, "Public Shelters")
