@@ -1,10 +1,18 @@
-# Israel News Montitor Pane
+# Israel News Montitoring Dashboard
 
  ![alt text](Screenshots/v2.png)
 
 ## Purpose Statement
 
 For those staying up to date with developments in Israel during geopolitically sensitive times.
+
+## Notes On Copyright
+
+This utility was created for the benefit of English speakers living in Israel and wishing to keep appraised of ongoing geopolitical developments with a "bird's eye" news monitoring type interface. 
+
+Kan (Israel's state broadcaster) is free to air in Israel. The Red Alert system will not display results without an Israeli IP.
+
+If you don't live in Israel and are just interested in following the news - this is not the tool for you!
 
 ## Author
 
