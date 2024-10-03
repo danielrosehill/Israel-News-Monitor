@@ -9,7 +9,8 @@ try:
 except ImportError:
     from backports.zoneinfo import ZoneInfo
 
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTabWidget, QScrollArea, QGridLayout
+from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTabWidget, 
+                             QScrollArea, QGridLayout, QSizePolicy, QDialog, QTextEdit)
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import Qt, QUrl, QTimer
 from PyQt5.QtGui import QFont, QGuiApplication
@@ -97,6 +98,7 @@ class PublicSheltersTab(QWidget):
         scroll_area = QScrollArea()
         scroll_content = QWidget()
         grid_layout = QGridLayout(scroll_content)
+
         row, col = 0, 0
         for city, url in shelters_data.items():
             button = QPushButton(city)
@@ -107,6 +109,7 @@ class PublicSheltersTab(QWidget):
             if col > 4:
                 col = 0
                 row += 1
+
         scroll_area.setWidget(scroll_content)
         scroll_area.setWidgetResizable(True)
         self.shelter_view = QWebEngineView()
@@ -140,12 +143,11 @@ class NewsTicker(QWidget):
         self.label.setFixedHeight(40)  # Increased height
         self.layout.addWidget(self.label)
         self.setLayout(self.layout)
-        
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_ticker)
         self.timer.start(60000)  # Update every minute
         self.update_ticker()
-    
+
     def update_ticker(self):
         feed_url = "https://rss.jpost.com/rss/rssfeedsisraelnews.aspx"
         try:
@@ -157,6 +159,30 @@ class NewsTicker(QWidget):
         except Exception as e:
             print(f"Error updating ticker: {e}")
 
+class AboutDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("About This App")
+        self.setFixedSize(400, 300)
+
+        layout = QVBoxLayout()
+
+        text_edit = QTextEdit()
+        text_edit.setReadOnly(True)
+        text_edit.setHtml("""
+        <h2>About This App</h2>
+        <p>This app was developed for the benefit of English speaking residents of Israel during a time of heightened conflict with Iran, Lebanon, and other entities. Its purpose is to help to provide a "bird's eye" view of key information sources. It includes a livestream of Kan (Israel's state broadcaster) as well as notifications from the Home Front Command's official website.</p>
+        <p>The app was developed with the expectation that those using it would be residents of Israel and hence able to legally access any of the streamed content displayed in it.</p>
+        """)
+
+        close_button = QPushButton("Close")
+        close_button.clicked.connect(self.close)
+
+        layout.addWidget(text_edit)
+        layout.addWidget(close_button)
+
+        self.setLayout(layout)
+
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -164,22 +190,31 @@ class MainWindow(QWidget):
         self.setWindowFlags(Qt.Window | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
         screen = QGuiApplication.primaryScreen().geometry()
         self.setGeometry(screen)
+        self.setFixedSize(screen.width(), screen.height())
 
         main_layout = QVBoxLayout()
         main_layout.setSpacing(0)
         main_layout.setContentsMargins(0, 0, 0, 0)
 
+        header_layout = QHBoxLayout()
         title_label = QLabel("Israeli News Monitoring Dashboard")
         title_label.setStyleSheet("font-weight: bold; background-color: #3498db; color: white; padding: 5px;")
         title_label.setAlignment(Qt.AlignCenter)
         title_label.setFont(QFont("Helvetica", 18))
-        main_layout.addWidget(title_label)
+        header_layout.addWidget(title_label)
 
         subtitle_label = QLabel("By: Claude Sonnet 3.5 & Daniel Rosehill")
         subtitle_label.setStyleSheet("background-color: #3498db; color: white; padding: 2px;")
         subtitle_label.setAlignment(Qt.AlignCenter)
         subtitle_label.setFont(QFont("Arial", 10))
-        main_layout.addWidget(subtitle_label)
+        header_layout.addWidget(subtitle_label)
+
+        about_button = QPushButton("About This App")
+        about_button.setStyleSheet("background-color: #2ecc71; color: white; font-weight: bold; padding: 5px;")
+        about_button.clicked.connect(self.show_about_dialog)
+        header_layout.addWidget(about_button)
+
+        main_layout.addLayout(header_layout)
 
         content_layout = QHBoxLayout()
 
@@ -207,13 +242,11 @@ class MainWindow(QWidget):
 
         main_layout.addLayout(content_layout)
 
-        # Add the news ticker
         self.news_ticker = NewsTicker()
         main_layout.addWidget(self.news_ticker)
 
         self.setLayout(main_layout)
 
-        # Start a timer to scroll the ticker
         self.scroll_timer = QTimer(self)
         self.scroll_timer.timeout.connect(self.scroll_ticker)
         self.scroll_timer.start(100)  # Update every 100 milliseconds (slower scrolling)
@@ -221,6 +254,10 @@ class MainWindow(QWidget):
     def scroll_ticker(self):
         ticker_text = self.news_ticker.label.text()
         self.news_ticker.label.setText(ticker_text[1:] + ticker_text[0])
+
+    def show_about_dialog(self):
+        dialog = AboutDialog(self)
+        dialog.exec_()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

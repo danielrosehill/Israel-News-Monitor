@@ -1,6 +1,6 @@
 # Israel News Montitoring Dashboard
 
- ![alt text](Screenshots/v2.png)
+![alt text](Screenshots/alert.png)
 
 ## Purpose Statement
 
