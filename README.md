@@ -1,6 +1,6 @@
 # Israel News Montitor Pane
 
-![alt text](Screenshots/v1.png)
+ ![alt text](Screenshots/v2.png)
 
 ## Purpose Statement
 
