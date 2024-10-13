@@ -1,10 +1,29 @@
 # Israel News Montitoring Dashboard
 
-![alt text](Screenshots/alert.png)
+This repository provides open-source documentation for building news monitoring dashboards designed to track fast-moving geopolitical events in Israel. The dashboards are intended for residents who want to stay informed, particularly during Jewish holidays when many refrain from using electronic devices, focusing on official governmental news channels and public safety alerts.
 
-## Purpose Statement
+## Screenshots And Example Use
 
-For those staying up to date with developments in Israel during geopolitically sensitive times.
+![alt text](Screenshots/1.png)
+
+![alt text](Screenshots/4.png)
+
+## News Source Displays
+
+![alt text](Screenshots/3.png)
+
+![alt text](Screenshots/2.png)
+
+The intended use-case includes deployment on tablets running in kiosk mode, TVs, or similar hardware, enabling an easy and accessible way to track important news updates, particularly during times of heightened tension.  
+
+## Data Sources
+
+See the `data-sources` folder which attaches two informational repositories as submodules. Data is offered without warranty as to its relibility.
+
+- [Public shelter lists](https://github.com/danielrosehill/Public-Shelter-Lists-Israel/tree/bdf68675fa68a70b69436c222b12e6ef59ea801f)
+- [News links](https://github.com/danielrosehill/Israeli-News-Links/tree/53875c4b556907b5d8db2b23eed26fe9d64494b0)
+
+**Public shelter links** aggregates municipalities' maps of public shelters (*miklatim*) while **news links** aggregates RSS feeds and other news sources that might provide additional monitoring targets.
 
 ## Notes On Copyright
 
