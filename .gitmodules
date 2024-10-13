@@ -1,0 +1,6 @@
+[submodule "Data-Sources/Public-Shelter-Lists-Israel"]
+	path = Data-Sources/Public-Shelter-Lists-Israel
+	url = git@github.com:danielrosehill/Public-Shelter-Lists-Israel.git
+[submodule "Data-Sources/Israeli-News-Links"]
+	path = Data-Sources/Israeli-News-Links
+	url = https://github.com/danielrosehill/Israeli-News-Links
