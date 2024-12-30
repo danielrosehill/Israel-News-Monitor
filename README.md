@@ -2,6 +2,23 @@
 
 This repository provides open-source documentation for building news monitoring dashboards designed to track fast-moving geopolitical events in Israel. The dashboards are intended for residents who want to stay informed, particularly during Jewish holidays when many refrain from using electronic devices, focusing on official governmental news channels and public safety alerts.
 
+##  Clone Repo With Submodules
+
+This repository has submodules to dynamically populate the news links as well as the public shelter lists which are maintained as separate repositories.
+
+To clone this repository along with the submodules run the following:
+
+`git clone --recurse-submodules https://github.com/danielrosehill/Israel-News-Monitor`
+
+## Cloning Submodules After Cloning Main Repo
+
+If you cloned the main repository without the recursion command for the submodules you can run the following to pull the submodules:
+
+`bash
+git submodule init
+git submodule update
+`
+
 ## Screenshots And Example Use
 
 ![alt text](Screenshots/1.png)
