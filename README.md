@@ -14,10 +14,10 @@ To clone this repository along with the submodules run the following:
 
 If you cloned the main repository without the recursion command for the submodules you can run the following to pull the submodules:
 
-`bash
+```bash
 git submodule init
 git submodule update
-`
+```
 
 ## Screenshots And Example Use
 
